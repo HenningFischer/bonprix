@@ -1,3 +1,4 @@
+import json
 
 class Extract_json:
 
@@ -5,19 +6,31 @@ class Extract_json:
 
         solution_dict = {}
 
+        json_data = json.loads(json_string)
+
         for key in search_key_list:
 
             path_element_list = key.split("/")
 
-            solution_dict[key] = self._compare_search_key_with_json(json_string, path_element_list)
+            solution_dict[key] = self._compare_search_key_with_json(json_data, path_element_list)
 
-    def _compare_search_key_with_json(self, json_string, path_element_list):
+        json_string_solution = json.dumps(solution_dict)
 
-                if len(path_element_list) == 1:
+        return json_string_solution
 
-                    return json_string[path_element_list]
+    def _compare_search_key_with_json(self, json_data, path_element_list):
 
-                self._compare_search_key_with_json(json_string[path_element_list[0]], path_element_list.pop(0))
+        for path_element_list_element in path_element_list:
+
+            if path_element_list_element not in json_data:
+
+                return None
+
+            else:
+
+                json_data = json_data[path_element_list_element]
+
+        return json_data
 
 
 
